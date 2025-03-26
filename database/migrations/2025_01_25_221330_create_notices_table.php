@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //This notices only for hall purposes
         Schema::create('notices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('hall_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('role');
-            $table->string('category');
+            $table->string('role')->default('student')->nullable();
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

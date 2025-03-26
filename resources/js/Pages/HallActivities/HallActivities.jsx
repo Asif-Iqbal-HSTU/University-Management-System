@@ -27,12 +27,20 @@ export default function TeacherDashboard() {
                         >
                             See in which rooms which students are staying.
                         </ActivityCard>
+
                         <ActivityCard
                             link="get.hall.students"
                             params={{ hall_id: hall.id }}
                             heading="Students"
                         >
                             See all Students of this hall and their status from here.
+                        </ActivityCard>
+
+                        <ActivityCard
+                            link = 'notice.add'
+                            heading="Add Notice"
+                        >
+                            Add new notice from here.
                         </ActivityCard>
 
                         <ActivityCard

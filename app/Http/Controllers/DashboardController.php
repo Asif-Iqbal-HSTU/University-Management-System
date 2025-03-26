@@ -59,6 +59,7 @@ class DashboardController extends Controller
             'user_id' => $user_id,
             'notices' => $notices,
             's_id' => $s_id,
+            'student' => $st,
         ]);
     }
 }

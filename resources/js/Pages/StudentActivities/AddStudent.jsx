@@ -27,6 +27,7 @@ export default function AddStudent() {
         session_year: '',
         hall_id: '',
         residential_status: '',
+        image: '', // New state for file upload
     });
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -36,11 +37,49 @@ export default function AddStudent() {
     const levels = ['1', '2', '3', '4', '5'];
     const semesters = ['I', 'II'];
 
+    // const submit = async (e) => {
+    //     e.preventDefault();
+    //     console.log(data);
+    //     try {
+    //         const response = await axios.post(route('student.add'), data);
+    //         const { status, message } = response.data;
+    //
+    //         if (status === 'success') {
+    //             setModalMessage(message);
+    //             setModalType('success');
+    //         } else {
+    //             setModalMessage(message);
+    //             setModalType('error');
+    //         }
+    //     } catch (error) {
+    //         if (error.response) {
+    //             setModalMessage(error.response.data.message || 'An unexpected error occurred.');
+    //             // setModalMessage(error.response.data.message );
+    //             setModalType('error');
+    //         } else {
+    //             setModalMessage('Failed to connect to the server. Please try again.');
+    //             setModalType('error');
+    //         }
+    //     } finally {
+    //         setModalOpen(true);
+    //     }
+    // };
+
     const submit = async (e) => {
         e.preventDefault();
 
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+            formData.append(key, data[key]);
+        });
+
         try {
-            const response = await axios.post(route('student.add'), data);
+            const response = await axios.post(route('student.add'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
             const { status, message } = response.data;
 
             if (status === 'success') {
@@ -51,17 +90,13 @@ export default function AddStudent() {
                 setModalType('error');
             }
         } catch (error) {
-            if (error.response) {
-                setModalMessage(error.response.data.message || 'An unexpected error occurred.');
-                setModalType('error');
-            } else {
-                setModalMessage('Failed to connect to the server. Please try again.');
-                setModalType('error');
-            }
+            setModalMessage(error.response?.data?.message || 'An unexpected error occurred.');
+            setModalType('error');
         } finally {
             setModalOpen(true);
         }
     };
+
 
     const facultyOptions = faculties.map((faculty) => ({
         label: faculty.name,
@@ -139,6 +174,18 @@ export default function AddStudent() {
                                         onChange={(e) => setData('phone', e.target.value)}
                                     />
                                     <InputError message={errors.phone} className="mt-2"/>
+                                </div>
+                                <div className="mt-4">
+                                    <InputLabel htmlFor="image" value="Your Image"/>
+                                    <TextInput
+                                        id="image"
+                                        type="file"
+                                        name="image"
+                                        className="mt-1 block w-full"
+                                        onChange={(e) => setData('image', e.target.files[0])}
+                                    />
+
+                                    <InputError message={errors.image} className="mt-2"/>
                                 </div>
                                 <div className="mt-4">
                                     <InputLabel htmlFor="faculty_id" value="Select Faculty"/>

@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import NewModal from "@/Components/NewModal.jsx";
-import SearchableDropdown from "@/Components/SearchableDropdown";
+import SearchableDropdown from "@/Components/SearchableDropdown.jsx";
 import TextArea from "@/Components/TextArea.jsx";
 
 export default function AddNotice() {
@@ -17,8 +17,6 @@ export default function AddNotice() {
         description: '',
         start_date: '',
         end_date: '',
-        role: '',
-        category: '',
     });
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -49,7 +47,7 @@ export default function AddNotice() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-blue-100 shadow-md sm:rounded-lg">
                         <div className="p-6">
-                            <h2 className="mb-2 text-gray-800 font-bold text-xl text-center">Add Notice</h2>
+                            <h2 className="mb-2 text-gray-800 font-bold text-xl text-center">Add a Notice</h2>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5">
@@ -80,40 +78,40 @@ export default function AddNotice() {
                                     />
                                     <InputError message={errors.description} className="mt-2"/>
                                 </div>
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="role" value="For which users?"/>
+                                {/*<div className="mt-4">*/}
+                                {/*    <InputLabel htmlFor="role" value="For which users?"/>*/}
 
-                                    <select
-                                        id="role"
-                                        name="role"
-                                        value={data.role}
-                                        className='mt-1 block w-full border-gray-300 text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm'
-                                        onChange={(e) => setData('role', e.target.value)}
-                                        required
-                                    >
-                                        <option value="">Select Role</option>
-                                        <option value="student">Student</option>
-                                        <option value="teacher">Teacher</option>
-                                    </select>
-                                    <InputError message={errors.semester} className="mt-2"/>
-                                </div>
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="category" value="Select Category"/>
+                                {/*    <select*/}
+                                {/*        id="role"*/}
+                                {/*        name="role"*/}
+                                {/*        value={data.role}*/}
+                                {/*        className='mt-1 block w-full border-gray-300 text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm'*/}
+                                {/*        onChange={(e) => setData('role', e.target.value)}*/}
+                                {/*        required*/}
+                                {/*    >*/}
+                                {/*        <option value="">Select Role</option>*/}
+                                {/*        <option value="student">Student</option>*/}
+                                {/*        <option value="teacher">Teacher</option>*/}
+                                {/*    </select>*/}
+                                {/*    <InputError message={errors.semester} className="mt-2"/>*/}
+                                {/*</div>*/}
+                                {/*<div className="mt-4">*/}
+                                {/*    <InputLabel htmlFor="category" value="Select Category"/>*/}
 
-                                    <select
-                                        id="category"
-                                        name="category"
-                                        value={data.category}
-                                        className='mt-1 block w-full border-gray-300 text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm'
-                                        onChange={(e) => setData('category', e.target.value)}
-                                        required
-                                    >
-                                        <option value="">Select Category</option>
-                                        <option value="Hall Seat">Hall Seat</option>
-                                        <option value="Hall Clearance">Hall Clearance</option>
-                                    </select>
-                                    <InputError message={errors.category} className="mt-2"/>
-                                </div>
+                                {/*    <select*/}
+                                {/*        id="category"*/}
+                                {/*        name="category"*/}
+                                {/*        value={data.category}*/}
+                                {/*        className='mt-1 block w-full border-gray-300 text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm'*/}
+                                {/*        onChange={(e) => setData('category', e.target.value)}*/}
+                                {/*        required*/}
+                                {/*    >*/}
+                                {/*        <option value="">Select Category</option>*/}
+                                {/*        <option value="Hall Seat">Hall Seat</option>*/}
+                                {/*        <option value="Hall Clearance">Hall Clearance</option>*/}
+                                {/*    </select>*/}
+                                {/*    <InputError message={errors.category} className="mt-2"/>*/}
+                                {/*</div>*/}
                                 <div className="mt-4">
                                     <InputLabel htmlFor="start_date" value="Start Date"/>
                                     <input
@@ -155,12 +153,12 @@ export default function AddNotice() {
                             <div className="mt-4">
                                 <p className="text-lg font-bold text-gray-700">{data.title || "Title will appear here"}</p>
                                 <p className="text-gray-600 mt-2">{data.description || "Description will appear here"}</p>
-                                <p className="text-sm text-gray-500 mt-4">
-                                    <strong>Category:</strong> {data.category || "Not selected"}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                    <strong>Role:</strong> {data.role || "Not selected"}
-                                </p>
+                                {/*<p className="text-sm text-gray-500 mt-4">*/}
+                                {/*    <strong>Category:</strong> {data.category || "Not selected"}*/}
+                                {/*</p>*/}
+                                {/*<p className="text-sm text-gray-500">*/}
+                                {/*    <strong>Role:</strong> {data.role || "Not selected"}*/}
+                                {/*</p>*/}
                                 <p className="text-sm text-gray-500">
                                     <strong>Start Date:</strong> {data.start_date || "Not selected"}
                                 </p>

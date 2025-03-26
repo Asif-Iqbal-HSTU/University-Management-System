@@ -27,4 +27,9 @@ class Hall extends Model
     {
         return $this->belongsTo(Building::class);
     }
+
+    public function notices(): HasMany
+    {
+        return $this->hasMany(Notice::class);
+    }
 }

@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('SID');
             $table->string('level');
             $table->string('semester');
+            $table->integer('session_year');
             $table->string('residential_status')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

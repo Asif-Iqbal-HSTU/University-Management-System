@@ -83,56 +83,217 @@ class HallSeatApplicationController extends Controller
         ]);
     }
 
+//    public function getSeatApplications(): Response
+//    {
+//        $user = Auth::user();
+//        $user_role = $user->role;
+//        $hall_id = null;
+//
+//        if ($user_role == 'teacher' && $user->teacher?->hallSuper) {
+//            $hall_id = $user->teacher->hallSuper->hall_id;
+//        } elseif ($user_role == 'hallStaff' && $user->hallStaff) {
+//            $hall_id = $user->hallStaff->hall_id;
+//        }
+//
+//        // If no hall ID is found, return an empty response.
+//        if (!$hall_id) {
+//            return Inertia::render('HallActivities/ViewSeatApplications', [
+//                'applications' => [],
+//            ]);
+//        }
+//
+//        // Fetch seat applications for the respective hall
+//        $applications = HallSeatApplication::with([
+//            'student',
+//            'student.user.address',
+//            'student.hall',
+//            'student.hall.building',
+//            'student.cgpa',
+//            'student.guardian',
+//            'student.degree',
+//        ])->whereHas('student', function ($query) use ($hall_id) {
+//            $query->where('hall_id', $hall_id);
+//        })->where('status', "pending")->get();
+//
+//        // Format applications with profile image
+//        $applications = $applications->map(function ($application) {
+//            $application->student->profile_image = $application->student->image
+//                ? asset('storage/public/' . $application->student->image)
+//                : null;
+//            return $application;
+//        });
+//
+////        dd($applications);
+//
+//        return Inertia::render('HallActivities/ViewSeatApplications', [
+//            'applications' => $applications,
+//        ]);
+//    }
+
+//    public function getSeatApplications(): Response
+//    {
+//        $user = Auth::user();
+//        $user_role = $user->role;
+//        $hall_id = null;
+//
+//        if ($user_role == 'teacher' && $user->teacher?->hallSuper) {
+//            $hall_id = $user->teacher->hallSuper->hall_id;
+//        } elseif ($user_role == 'hallStaff' && $user->hallStaff) {
+//            $hall_id = $user->hallStaff->hall_id;
+//        }
+//
+//        if (!$hall_id) {
+//            return Inertia::render('HallActivities/ViewSeatApplications', [
+//                'applications' => [],
+//                'sessions' => [], // Send empty sessions if no hall is found
+//            ]);
+//        }
+//
+//        // Fetch distinct session years dynamically
+//        $sessions = Student::where('hall_id', $hall_id)
+//            ->select('session_year')
+//            ->distinct()
+//            ->orderBy('session_year', 'desc')
+//            ->pluck('session_year');
+//
+//        $applications = HallSeatApplication::with([
+//            'student',
+//            'student.user.address',
+//            'student.hall',
+//            'student.hall.building',
+//            'student.cgpa',
+//            'student.guardian',
+//            'student.degree',
+//        ])->whereHas('student', function ($query) use ($hall_id) {
+//            $query->where('hall_id', $hall_id);
+//        })->where('status', "pending")->get();
+//
+//        // Format applications with profile image
+//        $applications = $applications->map(function ($application) {
+//            $application->student->profile_image = $application->student->image
+//                ? asset('storage/public/' . $application->student->image)
+//                : null;
+//            return $application;
+//        });
+//
+//        return Inertia::render('HallActivities/ViewSeatApplications', [
+//            'applications' => $applications,
+//            'sessions' => $sessions, // Send session data
+//        ]);
+//    }
+
+//    public function getSeatApplications(): Response
+//    {
+//        $user = Auth::user();
+//        $user_role = $user->role;
+//        $hall_id = null;
+//
+//        if ($user_role == 'teacher' && $user->teacher?->hallSuper) {
+//            $hall_id = $user->teacher->hallSuper->hall_id;
+//        } elseif ($user_role == 'hallStaff' && $user->hallStaff) {
+//            $hall_id = $user->hallStaff->hall_id;
+//        }
+//
+//        if (!$hall_id) {
+//            return Inertia::render('HallActivities/ViewSeatApplications', [
+//                'applications' => [],
+//                'sessionYears' => [],
+//            ]);
+//        }
+//
+//        // Fetch seat applications for the respective hall
+//        $applications = HallSeatApplication::with([
+//            'student',
+//            'student.user.address',
+//            'student.hall',
+//            'student.hall.building',
+//            'student.cgpa',
+//            'student.guardian',
+//            'student.degree',
+//        ])->whereHas('student', function ($query) use ($hall_id) {
+//            $query->where('hall_id', $hall_id);
+//        })->where('status', "pending")->get();
+//
+//        // Format applications with profile image
+//        $applications = $applications->map(function ($application) {
+//            $application->student->profile_image = $application->student->image
+//                ? asset('storage/public/' . $application->student->image)
+//                : null;
+//            return $application;
+//        });
+//
+//        // Get distinct session years from students table
+//        $sessionYears = Student::distinct()->pluck('session_year')->sortDesc()->values();
+//
+//        return Inertia::render('HallActivities/ViewSeatApplications', [
+//            'applications' => $applications,
+//            'sessionYears' => $sessionYears,
+//        ]);
+//    }
+
     public function getSeatApplications(): Response
     {
         $user = Auth::user();
-        $user_id = $user->id;
         $user_role = $user->role;
+        $hall_id = null;
 
-        if($user_role == 'teacher')
-        {
-            $teacher = User::find($user_id)->teacher;
-            $teacher_id = $teacher->id;
-            $hall_super = Teacher::find($teacher_id)->hallSuper;
-            $hall_id = $hall_super->hall_id;
-
-            $applications = HallSeatApplication::with([
-                'student', // Load the student relationship
-                'student.user.address', // Load user and address of the student
-                'student.hall', // Load the hall of the student
-                'student.hall.building', // Load the hall of the student
-                'student.cgpa', // Load the CGPA of the student
-                'student.guardian', // Load the guardian of the student
-                'student.degree', // Load the degree of the student
-            ])->whereHas('student', function ($query) use ($hall_id) {
-                $query->where('hall_id', $hall_id);
-            })->where('status', "pending")->get();
-        }
-        elseif($user_role == 'hallStaff')
-        {
-            $hallStaff = User::find($user_id)->hallStaff;
-            $hall_id = $hallStaff->hall_id;
-
-            $applications = HallSeatApplication::with([
-                'student', // Load the student relationship
-                'student.user.address', // Load user and address of the student
-                'student.hall', // Load the hall of the student
-                'student.hall.building', // Load the hall of the student
-                'student.cgpa', // Load the CGPA of the student
-                'student.guardian', // Load the guardian of the student
-                'student.degree', // Load the degree of the student
-            ])->whereHas('student', function ($query) use ($hall_id) {
-                $query->where('hall_id', $hall_id);
-            })->where('status', "pending")->get();
-        }
-        else{
-            $applications = [];
+        if ($user_role == 'teacher' && $user->teacher?->hallSuper) {
+            $hall_id = $user->teacher->hallSuper->hall_id;
+        } elseif ($user_role == 'hallStaff' && $user->hallStaff) {
+            $hall_id = $user->hallStaff->hall_id;
         }
 
-        return Inertia::render('AdminActivities/ViewSeatApplications', [
+        if (!$hall_id) {
+            return Inertia::render('HallActivities/ViewSeatApplications', [
+                'applications' => [],
+                'sessions' => []
+            ]);
+        }
+
+        // Fetch seat applications for the respective hall
+        $applications = HallSeatApplication::with([
+            'student',
+            'student.user.address',
+            'student.hall',
+            'student.hall.building',
+            'student.cgpa',
+            'student.guardian',
+            'student.degree',
+        ])->whereHas('student', function ($query) use ($hall_id) {
+            $query->where('hall_id', $hall_id);
+        })->where('status', "pending")->get();
+
+        // Format applications with profile image
+        $applications = $applications->map(function ($application) {
+            $application->student->profile_image = $application->student->image
+                ? asset('storage/public/' . $application->student->image)
+                : null;
+            return $application;
+        });
+
+        // Fetch unique sessions from applications
+//        $sessions = HallSeatApplication::with('student')
+//            ->whereHas('student', function ($query) use ($hall_id) {
+//                $query->where('hall_id', $hall_id);
+//            })
+//            ->where('status', "pending")
+//            ->pluck('student.session_year')
+//            ->unique()
+//            ->values();
+
+        $sessions = Student::where('hall_id', $hall_id)
+            ->select('session_year')
+            ->distinct()
+            ->orderBy('session_year', 'desc')
+            ->pluck('session_year');
+
+
+        return Inertia::render('HallActivities/ViewSeatApplications', [
             'applications' => $applications,
+            'sessions' => $sessions, // Pass sessions to frontend
         ]);
     }
+
 
 
 }

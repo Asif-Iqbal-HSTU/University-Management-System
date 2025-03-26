@@ -4,9 +4,9 @@ import React from "react";
 import ActivityCard from "@/Components/ActivityCard.jsx";
 export default function StudentDashboard() {
     const user = usePage().props.auth.user;
-    const { notices, s_id } = usePage().props;
+    const { notices, s_id, student } = usePage().props;
     console.log(s_id);
-    const hallSeatNotice = notices?.find(notice => notice.category === "Hall Seat");
+    const hallSeatNotice = notices?.find(notice => notice.hall_id === student.hall_id);
     const hallClearanceNotice = notices?.find(notice => notice.category === "Hall Clearance");
 
     return (
@@ -26,9 +26,9 @@ export default function StudentDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-5">
                         <ActivityCard
                             link = 'faculty.add'
-                            heading="Add Faculty"
+                            heading="Your Courses"
                         >
-                            Add new faculty from here.
+                            Your Course related activities easily accessible from here.
                         </ActivityCard>
 
                         {hallSeatNotice && (
@@ -36,7 +36,7 @@ export default function StudentDashboard() {
                                 link='hall.seat.application'
                                 heading="Hall Seat Application"
                             >
-                                Apply for hall seats from here.
+                                Your hall is granting application. Apply for hall seats from here.
                             </ActivityCard>
                         )}
 

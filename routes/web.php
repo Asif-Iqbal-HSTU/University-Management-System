@@ -18,6 +18,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\CourseObjectiveController;
 use App\Http\Controllers\SeatAllocationController;
+use App\Http\Controllers\DatabaseStructureController;
 use \App\Http\Middleware\TeacherMiddleware;
 use \App\Http\Middleware\StudentMiddleware;
 use \App\Http\Middleware\AdminMiddleware;
@@ -94,13 +95,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course.add');
         Route::get('/course/assign', [DistributionController::class, 'gotoAssignCourse'])->name('course.assign');
         Route::post('/course/assign', [DistributionController::class, 'assignCourseToTeacher'])->name('course.assign');
-        Route::get('/notice/add', [NoticeController::class, 'gotoAddNotice'])->name('notice.add');
-        Route::post('/notice/add', [NoticeController::class, 'addNotice'])->name('notice.add');
 
         Route::get('/view/hall/seat/application', [HallSeatApplicationController::class, 'getSeatApplications'])->name('view.hall.seat.application');
     });
 
     Route::middleware(TeacherMiddleware::class)->group(function () {
+        Route::get('/notice/add', [NoticeController::class, 'gotoAddNotice'])->name('notice.add');
+        Route::post('/notice/add', [NoticeController::class, 'addNotice'])->name('notice.add');
         Route::get('/hall/activities', [HallSeatApplicationController::class, 'gotoHallActivities'])->name('hall.activities');
         Route::get('/view/hall/seat/application', [HallSeatApplicationController::class, 'getSeatApplications'])->name('view.hall.seat.application');
         Route::get('/available-rooms/{hall_id}', [SeatAllocationController::class, 'getAvailableRooms'])->name('rooms.available');
@@ -126,6 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(StudentMiddleware::class)->group(function () {
         Route::get('/profile/edit/student', [ProfileController::class, 'gotoStudentProfileEdit'])->name('student.edit');
         Route::post('/profile/edit/student', [ProfileController::class, 'studentProfileEdit'])->name('student.edit');
+        Route::get('/notice/student', [NoticeController::class, 'gotoStudentNoticeBoard'])->name('student.noticeboard');
         Route::get('/hall/seat/application', [HallSeatApplicationController::class, 'gotoSeatApplication'])->name('hall.seat.application');
         Route::post('/hall/seat/application', [HallSeatApplicationController::class, 'seatApplication'])->name('hall.seat.application');
     });
@@ -137,5 +139,5 @@ Route::post('/student/register', [StudentController::class, 'addStudent'])->name
 
 
 Route::get('/profile/student/{s_id}', [ProfileController::class, 'studentProfile'])->name('profile.student');
-
+Route::get('/download-table-structures', [DatabaseStructureController::class, 'generateTableStructure']);
 require __DIR__.'/auth.php';

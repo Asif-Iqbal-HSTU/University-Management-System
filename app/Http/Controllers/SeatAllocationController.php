@@ -47,7 +47,6 @@ class SeatAllocationController extends Controller
 
     public function getAvailableRooms($hall_id): \Illuminate\Http\JsonResponse
     {
-        //dd($hall_id);
         $rooms = Room::whereHas('floor.building.hall', function ($query) use ($hall_id) {
             $query->where('id', $hall_id);
         })
@@ -59,12 +58,13 @@ class SeatAllocationController extends Controller
                     'id' => $room->id,
                     'room_number' => $room->room_number,
                     'students' => $room->seatAllocations->map(fn($s) => $s->student->SID),
-                    'available_seats' => max(0, 4 - $allocatedCount),
+                    'available_seats' => max(0, $room->available_seats - $allocatedCount),
                 ];
             });
 
         return response()->json($rooms);
     }
+
 
     public function allocateStudent(Request $request, $applicationID): \Illuminate\Http\JsonResponse
     {

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -29,23 +30,27 @@ class ProfileController extends Controller
     public function studentProfile($s_id):Response
     {
         $student = Student::where('SID', $s_id)->with('user', 'user.gender', 'user.address', 'faculty', 'degree', 'hall')->first();
-        $s_id = $student->id;
-        $seatAllocation = SeatAllocation::where('student_id', $s_id)->with('room')->first();
-        //$user = User::with('gender')->find($student->user_id);
-        $cgpa = Student::find($student->id)->cgpa;
-//        $guardian = Guardian::where('student_id', $st->id)->first();
-        $guardian = Student::find($student->id)->guardian;
-//        $address = User::find($user->id)->address;
 
-        //dd($address);
+        $filePath = $student->image;
+
+//        $profile_image = public_path('storage/student_images/' . basename($filePath));
+        // Ensure you are returning a valid URL for the frontend
+        $profile_image = $student->image ? asset('storage/public/' . $student->image) : null;
+        //dd($profile_image);
+
+        $seatAllocation = SeatAllocation::where('student_id', $student->id)->with('room')->first();
+
+        $cgpa = Student::find($student->id)->cgpa;
+
+        $guardian = Student::find($student->id)->guardian;
+
         return Inertia::render('Profiles/Student', [
             'student' => $student,
-//            'user' => $user,
             'cgpa' => $cgpa,
             'guardian' => $guardian,
-//            'address' => $address,
             's_id' => $s_id,
             'seatAllocation' => $seatAllocation,
+            'profile_image' => $profile_image,
         ]);
     }
 

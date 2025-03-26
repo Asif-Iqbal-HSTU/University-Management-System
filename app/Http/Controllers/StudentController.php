@@ -66,6 +66,7 @@ class StudentController extends Controller
 
     public function addStudent(Request $request): \Illuminate\Http\JsonResponse
     {
+//        dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -79,6 +80,7 @@ class StudentController extends Controller
             'semester' => 'required|string',
             'session_year' => 'required|integer',
             'residential_status' => 'required|string',
+            'image' => 'required|file',
         ]);
 
         $username = $this->generateUniqueUsername($request->name, $request->phone);
@@ -93,6 +95,26 @@ class StudentController extends Controller
                 'message' => 'A User already exists for the email.',
             ], 409);
         }
+
+        if ($request->hasFile('image')) {
+            // Generate a unique file name
+            $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
+            //dd($fileName);
+
+            // Store the uploaded file in the specified directory ('public/reference_books')
+            $filePath = $request->file('image')->storeAs('public/student_images', $fileName, 'public');
+
+            // Remove 'public/' from the file path to store in the database
+            $filePath = str_replace('public/', '', $filePath);
+        } else {
+            // File not present in request
+//            return redirect()->back()->withErrors(['File' => 'Please upload a PDF file.']);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Image not Addded. Please try again.',
+            ], 500);
+        }
+
 
 //        $user = User::create([
 //            'name' => $request->name,
@@ -130,11 +152,12 @@ class StudentController extends Controller
                 'SID' => $request->SID,
                 'level' => $request->level,
                 'semester' => $request->semester,
-                'session' => $request->session_year,
+                'session_year' => $request->session_year,
                 'residential_status' => $request->residential_status,
                 'faculty_id' => $request->faculty_id,
                 'degree_id' => $request->degree_id,
                 'hall_id' => $request->hall_id,
+                'image' => $filePath,
             ]);
 
             return response()->json([

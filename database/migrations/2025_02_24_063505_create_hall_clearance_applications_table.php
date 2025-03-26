@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('hall_clearance_applications', function (Blueprint $table) {
             $table->id();
-            $table->integer('room_number');
-            $table->foreignId('floor_id')->constrained()->onDelete('cascade');
-            $table->string('room_type');
-            $table->string('room_size');
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->date('application_date');
+            $table->string('status')->default('pending')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('hall_clearance_applications');
     }
 };

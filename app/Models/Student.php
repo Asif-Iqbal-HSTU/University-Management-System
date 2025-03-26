@@ -57,6 +57,9 @@ class Student extends Model
         return $this->hasOne(SeatAllocation::class);
     }
 
-
+    public function hallClearanceApplication(): HasOne
+    {
+        return $this->hasOne(HallClearanceApplication::class);
+    }
 
 }

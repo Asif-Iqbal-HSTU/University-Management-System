@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { FiLogIn, FiLogOut, FiUser } from 'react-icons/fi';
+import { FiLogIn, FiLogOut, FiUser, FiBell } from 'react-icons/fi';
 
 export default function Layout({ header, children, s_id="" }) {
     const user = usePage().props.auth.user;
@@ -87,6 +87,9 @@ export default function Layout({ header, children, s_id="" }) {
                                                             </Link>
                                                             <Link href={route('profile.student', s_id)} className="hover:underline">
                                                                 <FiUser className="text-2xl" title="Profile" />
+                                                            </Link>
+                                                            <Link href={route('student.noticeboard')} className="hover:underline">
+                                                                <FiBell className="text-2xl" title="Notice Board" />
                                                             </Link>
                                                         </>
                                                     ):(
