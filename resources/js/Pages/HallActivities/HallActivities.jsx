@@ -50,6 +50,13 @@ export default function TeacherDashboard() {
                             View Hall Seat applications from here.
                         </ActivityCard>
 
+                        <ActivityCard
+                            link = 'view.hall.seat.application'
+                            heading="Hall Canteen Menu"
+                        >
+                            Hall Canteen Menu
+                        </ActivityCard>
+
                     </div>
                 </div>
             </div>
